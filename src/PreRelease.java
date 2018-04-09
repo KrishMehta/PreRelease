@@ -12,7 +12,7 @@ public class PreRelease {
 
         int totalCow;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Input the herd size");
+        System.out.println("Input the herd size.");
         totalCow = scanner.nextInt();
 
         int identity[] = new int[totalCow];
@@ -20,30 +20,29 @@ public class PreRelease {
         double totalYield = 0;
         double highestYield = 0;
         double dailyYield[] = new double[totalCow];
-        int cowID;
         int low[] = new int[totalCow];
-        int found = 0;
-        int correct = 0;
+        int cowID;
+        int usedID = 0;
+        int falseID = 0;
 
         for (int count = 0; count < totalCow; count++) {
             int identityOrder = count + 1;
             System.out.println("Input the cow identity for cow #" + identityOrder);
-
             cowID = scanner.nextInt();
 
-            while ((cowID < 0) || (cowID > 999)) {
-                System.out.println("This is not a valid identity. Input a new one");
-                cowID = scanner.nextInt();
-            }
-                for (int counter = 0; counter < totalCow;) {
-                    if (cowID == identity[counter]) {
-                        found += 1;
+            for (int counter = 0; counter < totalCow; counter++) {
+                if (cowID == identity[counter]) {
+                    usedID += 1;
                 }
-                while (found > 0) {
-                    System.out.println("Invalid identity.");
-                    found = 0;
+                while (usedID > 0) {
+                    System.out.println("This identity has already been used by another cow.");
+                    usedID = 0;
                     cowID = scanner.nextInt();
                 }
+            }
+            while ((cowID < 0) || (cowID > 999)) {
+                System.out.println("This identity does not fall under the range of possible identities");
+                cowID = scanner.nextInt();
             }
             identity[count] = cowID;
         }
@@ -56,10 +55,10 @@ public class PreRelease {
 
                     for (int count = 0; count < totalCow; count++) {
                         if (cowID == identity[count]) {
-                            correct += 1;
+                            falseID += 1;
                         }
                     }
-                    while (correct < 1) {
+                    while (falseID > 0) {
                         System.out.println("This identity has not been pre-defined.");
                         cowID = scanner.nextInt();
                     }
