@@ -1,10 +1,10 @@
 import java.util.Scanner;
 
 /**
- * *****************************
- * * Class created by @Krish ***
- * *****************************
- **/
+ * **********************************
+ * @author class created by Krish ***
+ * **********************************
+ */
 
 public class PreRelease {
 
@@ -18,72 +18,101 @@ public class PreRelease {
         int identity[] = new int[totalCow];
         double yield[] = new double[totalCow];
         double totalYield = 0;
-        int falseIdentity;
+        double highestYield = 0;
+        double dailyYield[] = new double[totalCow];
+        int cowID;
+        int low[] = new int[totalCow];
+        int found = 0;
+        int correct = 0;
 
-        int under[] = new int[totalCow];
+        for (int count = 0; count < totalCow; count++) {
+            int identityOrder = count + 1;
+            System.out.println("Input the cow identity for cow #" + identityOrder);
 
-        for (int cow = 0; cow < totalCow; cow++) {
-            System.out.println("Input the cow identity for cow #" + (cow + 1));
-            falseIdentity = scanner.nextInt();
-            identity[cow] = falseIdentity;
+            cowID = scanner.nextInt();
 
-            while ((identity[cow] < 0) || (identity[cow] > 999)) {
+            while ((cowID < 0) || (cowID > 999)) {
                 System.out.println("This is not a valid identity. Input a new one");
-                identity[cow] = scanner.nextInt();
+                cowID = scanner.nextInt();
             }
+                for (int counter = 0; counter < totalCow;) {
+                    if (cowID == identity[counter]) {
+                        found += 1;
+                }
+                while (found > 0) {
+                    System.out.println("Invalid identity.");
+                    found = 0;
+                    cowID = scanner.nextInt();
+                }
+            }
+            identity[count] = cowID;
+        }
 
-            for (int day = 0; day < 7; day++) {
-                double dayYield = 0;
-                for (int session = 0; session < 2; session++) {
-                    System.out.println("What is the yield of cow #" + (cow + 1) + " on day #" + (day + 1) + " session #" + (session + 1));
-                    dayYield += scanner.nextDouble();
+        for (int day = 0; day < 7; day++) {
+            for (int session = 0; session < 2; session++) {
+                for (int i = 0; i < totalCow; i++) {
+                    System.out.println("What is the identity of the cow to be milked on day #" + (day + 1) + " session #" + (session + 1));
+                    cowID = scanner.nextInt();
 
-                    while (dayYield < 0) {
-                        System.out.println("The yield cannot be negative. Please re-input the yield");
-                        dayYield += scanner.nextDouble();
+                    for (int count = 0; count < totalCow; count++) {
+                        if (cowID == identity[count]) {
+                            correct += 1;
+                        }
+                    }
+                    while (correct < 1) {
+                        System.out.println("This identity has not been pre-defined.");
+                        cowID = scanner.nextInt();
                     }
 
+                    System.out.println("What is the yield of cow #" + cowID);
+                    double yieldL = scanner.nextDouble();
+
+                    for (int counter = 0; counter < totalCow; counter++) {
+                        if (identity[counter] == cowID) {
+
+                            yield[counter] += yieldL;
+                            totalYield += yieldL;
+                            dailyYield[counter] += yieldL;
+
+                            if (yield[counter] % 1 < 0.5) {
+                                yield[counter] = yield[counter] - (yield[counter] % 1);
+                            } else {
+                                yield[counter] = yield[counter] + (1 - (yield[counter] % 1));
+                            }
+
+                            if (session == 1) {
+                                if (dailyYield[counter] < 12) {
+                                    low[counter] += 1;
+                                }
+                            }
+                            dailyYield[counter] = 0;
+                        }
+                    }
                 }
-
-                yield[cow] += dayYield;
-                totalYield += dayYield;
-
-                if (dayYield < 12)
-                    under[cow]++;
             }
         }
 
+        System.out.println("The final yield of all the cows is " + totalYield + " litres of milk");
 
-        System.out.println("The final yield of all the cows is " + round(totalYield) + " litres of milk");
-
-        int hCow = 0;
-        double hYield = 0;
-
-        String underS = "";
-
-        for (int cow = 0; cow < totalCow; cow++) {
-            if (yield[cow] > hYield) {
-                hYield = yield[cow];
-                hCow = cow;
+        for (int counter = 0; counter < totalCow; counter++) {
+            double average = (yield[counter] / 7);
+            if (average % 1 < 0.5) {
+                average = average - (average % 1);
+            } else {
+                average = average + (1 - (average % 1));
             }
-
-            if (under[cow] >= 4)
-                underS += identity[cow] + " ";
+            System.out.println("The average yield for each cow in a day for identity " + identity[counter] + ": " + average + " litres of milk");
+            if (yield[counter] > highestYield) {
+                highestYield = yield[counter];
+            }
+            if (yield[counter] == highestYield) {
+                System.out.println("The cow identity: " + identity[counter] + " has the highest production of " + highestYield + ".");
+            }
+            if (low[counter] > 3) {
+                System.out.println("identity:" + identity[counter] + " has produced less than 12 litres of milk for at least 4 days.");
+            }
         }
-
-        System.out.println("Cow " + identity[hCow] + " had the highest yield, " + round(hYield) + " litres of milk");
-
-        for (int counter = 0; counter < totalCow; counter++)
-            System.out.println("The average yield for each cow: identity " + identity[counter] + ": " + round(yield[counter] / 14.0) + " litres of milk");
-
-        System.out.print("Cows with daily yields of less than 12 litres for 4 or more days:" + "Cow ID #" + underS);
     }
-
-    private static int round(double num) {
-        int rounded = (int) num;
-        if (num % 1 >= 0.5) rounded++;
-        return rounded;
-    }
-
 }
+
 
