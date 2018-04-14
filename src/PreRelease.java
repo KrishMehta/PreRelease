@@ -5,6 +5,7 @@
  */
 
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class PreRelease {
 
@@ -22,9 +23,9 @@ public class PreRelease {
         double dailyYield[] = new double[totalCow];
         int low[] = new int[totalCow];
         int cowID;
-        int falseID = 0;
 
         boolean validated;
+        boolean defined;
 
         for (int count = 0; count < totalCow; count++) {
             int identityOrder = count + 1;
@@ -60,18 +61,20 @@ public class PreRelease {
         for (int day = 0; day < 7; day++) {
             for (int session = 0; session < 2; session++) {
                 for (int i = 0; i < totalCow; i++) {
+                    do {
                     System.out.println("Enter the identity of the cow to be milked on day #" + (day + 1) + " session #" + (session + 1) + ".");
                     cowID = scanner.nextInt();
 
-                    for (int count = 0; count < totalCow; count++) {
-                        if (identity[count] != cowID) {
-                            falseID += 1;
+                    defined = true;
+
+                        for (int count = 0; count < totalCow; count++) {
+                            if (!Arrays.asList(identity[i]).contains(cowID)) {
+                                System.out.println("This identity has not been pre-defined or already has a defined value.");
+                                defined = false;
+                                break;
+                            }
                         }
-                        while (falseID > 1) {
-                            System.out.println("This identity has not been pre-defined.");
-                            cowID = scanner.nextInt();
-                        }
-                    }
+                    } while (!defined);
 
                     System.out.println("Enter the yield of cow #" + cowID + ".");
                     double yieldL = scanner.nextDouble();
