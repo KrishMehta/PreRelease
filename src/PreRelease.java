@@ -1,10 +1,10 @@
-import java.util.Scanner;
-
 /**
  * **********************************
  * @author class created by Krish ***
  * **********************************
  */
+
+import java.util.Scanner;
 
 public class PreRelease {
 
@@ -22,28 +22,38 @@ public class PreRelease {
         double dailyYield[] = new double[totalCow];
         int low[] = new int[totalCow];
         int cowID;
-        int usedID = 0;
         int falseID = 0;
+
+        boolean validated;
 
         for (int count = 0; count < totalCow; count++) {
             int identityOrder = count + 1;
-            System.out.println("Input the cow identity for cow #" + identityOrder + ".");
-            cowID = scanner.nextInt();
 
-            for (int counter = 0; counter < totalCow; counter++) {
-                if (cowID == identity[counter]) {
-                    usedID += 1;
-                }
-                while (usedID > 0) {
-                    System.out.println("This identity has already been used by another cow.");
-                    usedID = 0;
-                    cowID = scanner.nextInt();
-                }
-            }
-            while ((cowID < 0) || (cowID > 999)) {
-                System.out.println("This identity does not fall under the range of possible identities");
+            // check this ID isn't already used
+            do {
+                System.out.println("Input the cow identity for cow #" + identityOrder + ".");
                 cowID = scanner.nextInt();
-            }
+
+                validated = true;
+
+                // range check
+                if ((cowID < 0) || (cowID > 999)) {
+                    System.out.println("This identity does not fall under the range of possible identities");
+                    validated = false;
+                    continue;
+                }
+
+                // iterate through the other identities to check it's available
+                for (int i = 0; i < totalCow; i++) {
+                    if (identity[i] == cowID) {
+                        // clash detected, invalid input
+                        System.out.println("This identity has already been used by another cow!");
+                        validated = false;
+                        break;
+                    }
+                }
+            } while (!validated);
+
             identity[count] = cowID;
         }
 
@@ -54,13 +64,13 @@ public class PreRelease {
                     cowID = scanner.nextInt();
 
                     for (int count = 0; count < totalCow; count++) {
-                        if (cowID == identity[count]) {
+                        if (identity[count] != cowID) {
                             falseID += 1;
                         }
-                    }
-                    while (falseID > 0) {
-                        System.out.println("This identity has not been pre-defined.");
-                        cowID = scanner.nextInt();
+                        while (falseID > 1) {
+                            System.out.println("This identity has not been pre-defined.");
+                            cowID = scanner.nextInt();
+                        }
                     }
 
                     System.out.println("Enter the yield of cow #" + cowID + ".");
@@ -122,5 +132,4 @@ public class PreRelease {
         if (num % 1 >= 0.5) rounded++;
         return rounded;
     }
-
 }
