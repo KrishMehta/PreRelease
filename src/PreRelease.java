@@ -5,7 +5,6 @@
  */
 
 import java.util.Scanner;
-import java.util.Arrays;
 
 public class PreRelease {
 
@@ -28,11 +27,10 @@ public class PreRelease {
         boolean defined;
 
         for (int count = 0; count < totalCow; count++) {
-            int identityOrder = count + 1;
 
             // check this ID isn't already used
             do {
-                System.out.println("Input the cow identity for cow #" + identityOrder + ".");
+                System.out.println("Input the cow identity for cow #" + (count + 1) + ".");
                 cowID = scanner.nextInt();
 
                 validated = true;
@@ -62,17 +60,23 @@ public class PreRelease {
             for (int session = 0; session < 2; session++) {
                 for (int i = 0; i < totalCow; i++) {
                     do {
-                    System.out.println("Enter the identity of the cow to be milked on day #" + (day + 1) + " session #" + (session + 1) + ".");
-                    cowID = scanner.nextInt();
+                        System.out.println("Enter the identity of the cow to be milked on day #" + (day + 1) + " session #" + (session + 1) + ".");
+                        cowID = scanner.nextInt();
 
-                    defined = true;
+                        defined = false;
 
+                        // iterate through the other identities to check it's valid
                         for (int count = 0; count < totalCow; count++) {
-                            if (!Arrays.asList(identity[i]).contains(cowID)) {
-                                System.out.println("This identity has not been pre-defined or already has a defined value.");
-                                defined = false;
+                            if (identity[count] == cowID) {
+                                // found it in our list
+                                defined = true;
                                 break;
                             }
+                        }
+
+                        // send error message before next input message if necessary
+                        if (!defined) {
+                            System.out.println("This identity has not been pre-defined or already has a defined value.");
                         }
                     } while (!defined);
 
