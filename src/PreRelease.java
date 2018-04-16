@@ -1,6 +1,7 @@
 /**
  * **********************************
- * @author class created by Krish ***
+ * @author class created by Krish   *
+ * @date - class created on 16/4/18 *
  * **********************************
  */
 
@@ -90,13 +91,11 @@ public class PreRelease {
                             totalYield += yieldL;
                             dailyYield[counter] += yieldL;
 
-                            /*
-                            if (yield[counter] % 1 < 0.5) {
-                                yield[counter] -= (yield[counter] % 1);
-                            } else {
-                                yield[counter] += (1 - (yield[counter] % 1));
-                            }
-                            */
+//                            if (yield[counter] % 1 < 0.5) {
+//                                yield[counter] -= (yield[counter] % 1);
+//                            } else {
+//                                yield[counter] += (1 - (yield[counter] % 1));
+//                            }
 
                             if (session == 1) {
                                 if (dailyYield[counter] < 12) {
@@ -113,14 +112,14 @@ public class PreRelease {
         System.out.println("The final yield of all the cows is " + totalYield + " litres of milk.");
 
         for (int counter = 0; counter < totalCow; counter++) {
-            double average = (yield[counter] / 7);
-            /*
-            if (average % 1 < 0.5) {
-                average -= (average % 1);
-            } else {
-                average += (1 - (average % 1));
-            }
-            */
+            double average = (totalYield/totalCow);
+
+//            if (average % 1 < 0.5) {
+//                average -= (average % 1);
+//            } else {
+//                average += (1 - (average % 1));
+//            }
+
             System.out.println("The average yield for each cow in a day for identity " + identity[counter] + ": " + round(average) + " litres of milk.");
             if (yield[counter] > highestYield) {
                 highestYield = yield[counter];

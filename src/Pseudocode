@@ -99,7 +99,7 @@ NEXT
 PRINT “The final yield of all the cows is “, totalYield, “ litres of milk.”
 
 FOR counter = 1 TO totalCow
-	average = (yield[counter] / 7)
+	average = (totalYield/totalCow)
 
     IF (average MOD 1 < 0.5) THEN
         average = average - (average MOD 1)
