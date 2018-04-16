@@ -15,6 +15,7 @@ public class PreRelease {
         System.out.println("Input the herd size.");
         totalCow = scanner.nextInt();
 
+
         int identity[] = new int[totalCow];
         double yield[] = new double[totalCow];
         double totalYield = 0;
@@ -22,7 +23,6 @@ public class PreRelease {
         double dailyYield[] = new double[totalCow];
         int low[] = new int[totalCow];
         int cowID;
-
         boolean validated;
         boolean defined;
 
@@ -37,7 +37,7 @@ public class PreRelease {
 
                 // range check
                 if ((cowID < 0) || (cowID > 999)) {
-                    System.out.println("This identity does not fall under the range of possible identities");
+                    System.out.println("This identity does not fall under the range of possible identities.");
                     validated = false;
                     continue;
                 }
@@ -46,7 +46,7 @@ public class PreRelease {
                 for (int i = 0; i < totalCow; i++) {
                     if (identity[i] == cowID) {
                         // clash detected, invalid input
-                        System.out.println("This identity has already been used by another cow!");
+                        System.out.println("This identity has already been used by another cow.");
                         validated = false;
                         break;
                     }
@@ -92,9 +92,9 @@ public class PreRelease {
 
                             /*
                             if (yield[counter] % 1 < 0.5) {
-                                yield[counter] = yield[counter] - (yield[counter] % 1);
+                                yield[counter] -= (yield[counter] % 1);
                             } else {
-                                yield[counter] = yield[counter] + (1 - (yield[counter] % 1));
+                                yield[counter] += (1 - (yield[counter] % 1));
                             }
                             */
 
@@ -116,15 +116,18 @@ public class PreRelease {
             double average = (yield[counter] / 7);
             /*
             if (average % 1 < 0.5) {
-                average = average - (average % 1);
+                average -= (average % 1);
             } else {
-                average = average + (1 - (average % 1));
+                average += (1 - (average % 1));
             }
             */
             System.out.println("The average yield for each cow in a day for identity " + identity[counter] + ": " + round(average) + " litres of milk.");
             if (yield[counter] > highestYield) {
                 highestYield = yield[counter];
             }
+        }
+
+        for (int counter = 0; counter < totalCow; counter++) {
             if (yield[counter] == highestYield) {
                 System.out.println("The cow identity: " + identity[counter] + " has the highest production of " + round(highestYield) + ".");
             }
@@ -140,3 +143,4 @@ public class PreRelease {
         return rounded;
     }
 }
+
