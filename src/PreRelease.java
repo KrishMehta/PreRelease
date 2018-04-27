@@ -16,7 +16,6 @@ public class PreRelease {
         System.out.println("Input the herd size.");
         totalCow = scanner.nextInt();
 
-
         int identity[] = new int[totalCow];
         double yield[] = new double[totalCow];
         double totalYield = 0;
@@ -99,7 +98,7 @@ public class PreRelease {
 
                             if (session == 1) {
                                 if (dailyYield[counter] < 12) {
-                                    low[counter] += 1;
+                                    low[counter]++;
                                 }
                             }
                             dailyYield[counter] = 0;
@@ -112,7 +111,7 @@ public class PreRelease {
         System.out.println("The final yield of all the cows is " + totalYield + " litres of milk.");
 
         for (int counter = 0; counter < totalCow; counter++) {
-            double average = (totalYield/totalCow);
+            double average = (totalYield / totalCow);
 
 //            if (average % 1 < 0.5) {
 //                average -= (average % 1);
