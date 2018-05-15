@@ -24,14 +24,12 @@ FOR count = 1 TO totalCow
 		IF ((cowID < 0) OR (cowID > 999)) THEN
 			PRINT “This identity does not fall under the range of possible identities.”
 			validated = false
-			continue;
         ENDIF
 
         FOR i = 1 TO totalCow
 	        IF (identity[i] = cowID) THEN
 		        PRINT “This identity has already been used by another cow.”
 		        validated = false
-                break;
             ENDIF
 		NEXT
 	UNTIL validated = true
@@ -52,7 +50,6 @@ FOR day = 1 TO 7
 				FOR count = 1 TO totalCow
 					IF (identity[count] = cowID) THEN
 						defined = true
-						break;
 					ENDIF
 				NEXT
 

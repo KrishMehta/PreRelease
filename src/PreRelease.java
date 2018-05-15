@@ -1,8 +1,7 @@
 /**
- * **********************************
- * @author class created by Krish   *
- * @date - class created on 16/4/18 *
- * **********************************
+ * *********************************
+ * @author class created by Krish  *
+ * *********************************
  */
 
 import java.util.Scanner;
@@ -141,4 +140,3 @@ public class PreRelease {
         return rounded;
     }
 }
-
