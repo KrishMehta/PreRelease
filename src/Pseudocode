@@ -1,124 +1,116 @@
-DECLARE totalCow: INTEGER
-PRINT “Input the herd size.”
-INPUT totalCow
+TASK 1
 
-DECLARE identity[]: ARRAY[1:totalCow] OF INTEGER
-DECLARE yieldL: REAL
-DECLARE yield[]: ARRAY[1:totalCow] OF REAL
-DECLARE totalYield: REAL
-DECLARE highestYield: REAL
-DECLARE dailyYield[]: ARRAY[1:totalCow] OF REAL
-DECLARE low[]: ARRAY[1:totalCow] OF INTEGER
+DECLARE cow: INTEGER
+PRINT “Input the herd size”
+INPUT cow
+CONSTANT totalCow: = cow
+
 DECLARE cowID: INTEGER
-DECLARE average: REAL
-DECLARE validated: BOOLEAN
-DECLARE defined: BOOLEAN
+DECLARE tempYield: REAL
+DECLARE identity[]: ARRAY[1:totalCow] OF INTEGER
+DECLARE yield[]: ARRAY[1:totalCow] OF REAL
 
-FOR count = 1 TO totalCow
-	REPEAT
-		PRINT “Input the cow identity for cow #”, (count + 1) + “.”
-		INPUT CowID
-
-		validated = true
-
-		IF ((cowID < 0) OR (cowID > 999)) THEN
-			PRINT “This identity does not fall under the range of possible identities.”
-			validated = false
-        ENDIF
-
-        FOR i = 1 TO totalCow
-	        IF (identity[i] = cowID) THEN
-		        PRINT “This identity has already been used by another cow.”
-		        validated = false
-            ENDIF
-		NEXT
-	UNTIL validated = true
-
-	identity[count] <-- cowID
-
+FOR count ← 1 TO totalCow
+    PRINT “Input the cow identity for cow #”, count
+    INPUT cowID
+	WHILE cowID < 100 OR cowID > 999  DO
+//	WHILE LENGTH(cowID)<> 3 DO
+      	PRINT “Please input an identity between 001 & 999”
+		INPUT cowID
+    ENDWHILE
+    identity[count] ← cowID
 NEXT
 
-FOR day = 1 TO 7
-	FOR session = 1 TO 2
-		FOR i = 1 TO totalCow
-			REPEAT
-				PRINT “Enter the identity of the cow to be milked on day #”, (day + 1), “ session #”, (session + 1), “.”
-				INPUT cowID
+FOR day ← 1 TO 7
+    FOR session ← 1 TO 2
+        FOR count ← 1 TO totalCow
+            PRINT “Enter the identity of the cow to be milked on day #”, day, “ session #”, session
+            INPUT cowID
+            PRINT “Enter the yield of cow #”, cowID, “ to one D.P.”
+        	INPUT tempYield
+            FOR counter ← 1 TO totalCow
+           	    IF cowID = identity[counter] THEN
+                    yield[counter] ← yield[counter] + tempYield
+        		ENDIF
+        	NEXT
+     	NEXT
+   	NEXT
+NEXT
 
-				defined = false
 
-				FOR count = 1 TO totalCow
-					IF (identity[count] = cowID) THEN
-						defined = true
-					ENDIF
-				NEXT
 
-				IF defined = false THEN
-					PRINT “This identity has not been pre-defined or already has a defined value.”
-				ENDIF
-			UNTIL defined = true
+TASK 2
 
-			PRINT “Enter the yield of cow #”, cowID, “.”
-			INPUT yieldL
+DECLARE totalYield: REAL
 
-			FOR counter = 1 TO totalCow
-				IF (identity[counter] = cowID) THEN
+totalYield ← 0
 
-				    yield[counter] = yield[counter] + yieldL
-				    totalYield = totalYield + yieldL
-				    dailyYield[counter] = dailyYield[counter] + yieldL
+FOR count ← 1 TO totalCow
+    totalYield ← totalYield + yield[count]
+NEXT
 
-				    IF (yield[counter] MOD 1 < 0.5) THEN
-                        yield[counter] = yield[counter] - (yield[counter] MOD 1)
-                    ELSE
-                        yield[counter] = yield[counter] + (1 - (yield[counter] MOD 1))
-                    ENDIF
+DECLARE roundedTotalYield: REAL
+DECLARE average: REAL
 
-                    IF (totalYield MOD 1 < 0.5) THEN
-                        totalYield = totalYield - (totalYield MOD 1)
-                    ELSE
-                        totalYield = totalYield + (1 - (totalYield MOD 1))
+roundedTotalYield ← 0
+average ← 0
 
-                    IF (session = 2) THEN
-	                    IF (dailyYield[counter] < 12) THEN
-		                    low[counter] <-- low[counter] + 1
-	                    ENDIF
-                    ENDIF
+IF totalYield MOD 1 < 0.5 THEN
+     roundedTotalYield ← totalYield - (totalYield MOD 1)
+ELSE
+    roundedTotalYield ← totalYield + (1 - (totalYield MOD 1)
+ENDIF
 
-                    dailyYield[counter] <-- 0
+PRINT "The total volume of milk for the herd to the nearest whole litre is ", roundedTotalYield
 
-                ENDIF
-			NEXT
+average ← totalYield / totalCow
+
+IF average MOD 1 < 0.5 THEN
+    average ←  average - (average MOD 1)
+ELSE
+    average ←  average + (1 - (average MOD 1)
+ENDIF
+
+PRINT "The average yield per cow to the nearest whole litre is ", average
+
+TASK 3
+
+DECLARE highestYield: REAL
+DECLARE dailyYield[]: ARRAY [1:totalCow] OF REAL
+DECLARE low[]: ARRAY[1:totalCow] OF INTEGER
+
+FOR day ← 1 TO 7
+    FOR session ← 1 TO 2
+        FOR count ← 1 TO totalCow
+            PRINT “Enter the yield of cow # “, cowID, “ to one d.p.”
+            INPUT tempYield
+            dailyYield[count] ← dailyYield[count] + tempYield
+            IF session = 2 THEN
+                IF dailyYield[count] < 12 THEN
+                    low[count] ← low[count] + 1
+      			ENDIF
+                dailyYield[count] ← 0
+			ENDIF
 		NEXT
     NEXT
 NEXT
 
-PRINT “The final yield of all the cows is “, totalYield, “ litres of milk.”
+highestYield ← 0
 
-FOR counter = 1 TO totalCow
-	average = (totalYield/totalCow)
-
-    IF (average MOD 1 < 0.5) THEN
-        average = average - (average MOD 1)
-    ELSE
-	    average = average + (1 - (average MOD 1))
-    ENDIF
-
-    PRINT “The average yield for each cow in a day for identity “, identity[counter], “: “, average, “ litres of milk.”
-
-    IF (yield[counter] > highestYield) THEN
-	    highestYield <-- yield[counter]
-    ENDIF
-
-NEXT
-
-FOR counter = 1 TO totalCow
-    IF (yield[counter] = highestYield) THEN
-	    PRINT “The cow identity: “, identity[counter], “ has the highest production of “, highestYield, “.”
-    ENDIF
-
-    IF (low[counter] > 3) THEN
-	    PRINT “identity:” identity[counter], “ has produced less than 12 litres of milk for at least 4 days.”
+FOR count ← 1 TO totalcow
+    IF yield[count] > highestYield THEN
+        highestYield ← yield[count]
     ENDIF
 NEXT
 
+FOR count ← 1 TO totalCow
+    IF yield[count] = highestYield THEN
+        PRINT “The cow identity: “, identity[count], “ has the highest production of “, highestYield
+    ENDIF
+NEXT
+
+FOR count ← 1 TO totalCow
+   	IF low[count] > 3 THEN
+        PRINT “The cow identity:” identity[count], “ has produced less than 12 litres of milk for at least 4 days.”
+   	ENDIF
+NEXT
